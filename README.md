@@ -127,8 +127,8 @@ The default setting uses a cost model to determine which vertices to prune and u
 In `MiniGraph/src/run.cpp`, you can modify the following two lines to change the configuration. You also need to rebuild the binaries to ensure the changes are made.
 
 ```cpp
-line 209: conf.pruningType = PruningType::CostModel;
-line 210: conf.parType     = ParallelType::NestedRt;
+line 210: conf.pruningType = PruningType::CostModel;
+line 211: conf.parType     = ParallelType::NestedRt;
 ```
 Acceptable configuration for `conf.pruningType` includes:
 ```cpp
