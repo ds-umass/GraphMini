@@ -8,10 +8,11 @@
 #include "vertex_set.h"
 #include "graph.h"
 #include <atomic>
-#include <tuple>
 
 #define NOT_PRUNE -2
 #define WILL_PRUNE -1
+#define DISABLE_REUSE 1
+#undef DIABLE_REUSE
 
 namespace minigraph {
     
@@ -332,6 +333,11 @@ namespace minigraph {
                    const VertexSet &_vertex,
                    const VertexSet &_intersect,
                    const VertexSet &_iter) override {
+
+            #ifdef DISABLE_REUSE
+                    return build(_vertex, _intersect, _iter);
+            #endif
+
             m_mg = mg;
             m_vertex = _vertex;
             m_intersect = _intersect;
@@ -620,18 +626,16 @@ namespace minigraph {
         size_t est_edges{0};
         size_t two_htop{0};
         // size_t threshold{0};
-        double reuse_multiplier{0};
+        double reuse_multiplier{-1};
         // estimated number of times the pruned adj will be used
         // if less than 0 prune all
 
         bool should_prune(size_t idx) const {
-            return false;
             uint64_t degree = DATA_GRAPH->Degree(m_vertex[idx]);
-            const static int large_degree_threshold = DATA_GRAPH->num_edge * 4 / DATA_GRAPH->num_vertex;
+            const static int large_degree_threshold = DATA_GRAPH->num_edge / DATA_GRAPH->num_vertex * 4;
             if (degree >= large_degree_threshold) return true;
             auto intersect_size = m_intersect.size();
-            double gain = reuse_multiplier / m_vertex.size() * (degree - 1.0 * intersect_size * degree / DATA_GRAPH->num_vertex) - intersect_size - degree;
-            // double gain = reuse_multiplier / two_htop * degree * (degree - 1.0 * intersect_size * degree / DATA_GRAPH->num_vertex) - intersect_size - degree;
+            double gain = reuse_multiplier / m_vertex.size() * (degree - intersect_size * degree / DATA_GRAPH->num_vertex) - intersect_size - degree;
         //    if (gain < 0 && degree > 10000) {
         //        printf("Vertex Degree=%d | Reuse Factor=%f | Vertex Size=%d | Intersect Size=%d | Gain=%f\n ", degree, reuse_multiplier, m_vertex.size(), intersect_size, gain);
         //    }
@@ -662,9 +666,9 @@ namespace minigraph {
             num_edges = two_htop = 0;
             m_pos[0] = 0;
 
-            for (auto v_id : m_vertex) {
-                two_htop += DATA_GRAPH->Degree(v_id);
-            }
+            // for (auto v_id : m_vertex) {
+            //     two_htop += DATA_GRAPH->Degree(v_id);
+            // }
             if (_iter.begin() == m_vertex.begin()) {
                 for (uint64_t i = 0; i < _iter.size(); ++i) {
                     size_t buffer_required = m_intersect.size() + m_pos[i];
@@ -733,6 +737,10 @@ namespace minigraph {
                    const VertexSet &_vertex,
                    const VertexSet &_intersect,
                    const VertexSet &_iter) override {
+
+                    #ifdef DISABLE_REUSE
+                        return build(_vertex, _intersect, _iter);
+                    #endif
             m_mg = mg;
             m_vertex = _vertex;
             m_intersect = _intersect;
@@ -746,9 +754,9 @@ namespace minigraph {
             num_edges = two_htop = 0;
             m_pos[0] = 0;
 
-            for (auto v_id : m_vertex) {
-                two_htop += DATA_GRAPH->Degree(v_id);
-            }
+            // for (auto v_id : m_vertex) {
+            //     two_htop += DATA_GRAPH->Degree(v_id);
+            // }
 
             // m_indices = get_indices(m_vertex, _iter);
             m_mg_indices = m_mg->indices(m_vertex);
