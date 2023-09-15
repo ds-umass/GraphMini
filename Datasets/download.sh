@@ -5,35 +5,35 @@ echo "Download files into" ${DATASET_OUTDIR}
 if test -f "${DATASET_OUTDIR}/wiki/snap.txt"; then
     echo "wiki exists"
 else
-    wget https://snap.stanford.edu/data/wiki-Vote.txt.gz -o wiki.txt.gz
+    curl https://snap.stanford.edu/data/wiki-Vote.txt.gz -o wiki.txt.gz
     gzip -d wiki.txt.gz && mkdir -p ${DATASET_OUTDIR}/wiki && mv wiki.txt ${DATASET_OUTDIR}/wiki/snap.txt
 fi
 
 if test -f "${DATASET_OUTDIR}/youtube/snap.txt"; then
     echo "youtube exists"
 else
-    wget http://snap.stanford.edu/data/bigdata/communities/com-youtube.ungraph.txt.gz -o youtube.txt.gz
+    curl http://snap.stanford.edu/data/bigdata/communities/com-youtube.ungraph.txt.gz -o youtube.txt.gz
     gzip -d youtube.txt.gz && mkdir -p ${DATASET_OUTDIR}/youtube && mv youtube.txt ${DATASET_OUTDIR}/youtube/snap.txt
 fi
 
 if test -f "${DATASET_OUTDIR}/lj/snap.txt"; then
    echo "lj exists"
 else
-   wget http://snap.stanford.edu/data/bigdata/communities/com-lj.ungraph.txt.gz -o lj.txt.gz
+   curl http://snap.stanford.edu/data/bigdata/communities/com-lj.ungraph.txt.gz -o lj.txt.gz
    gzip -d lj.txt.gz && mkdir -p ${DATASET_OUTDIR}/lj && mv lj.txt ${DATASET_OUTDIR}/lj/snap.txt
 fi
 
 if test -f "${DATASET_OUTDIR}/orkut/snap.txt"; then
    echo "orkut exists"
 else
-   wget http://snap.stanford.edu/data/bigdata/communities/com-orkut.ungraph.txt.gz -o orkut.txt.gz
+   curl http://snap.stanford.edu/data/bigdata/communities/com-orkut.ungraph.txt.gz -o orkut.txt.gz
    gzip -d orkut.txt.gz && mkdir -p ${DATASET_OUTDIR}/orkut && mv orkut.txt ${DATASET_OUTDIR}/orkut/snap.txt
 fi
 
 if test -f "${DATASET_OUTDIR}/patents/snap.txt"; then
    echo "patents exitst"
 else
-   wget http://snap.stanford.edu/data/cit-Patents.txt.gz -o patents.txt.gz
+   curl http://snap.stanford.edu/data/cit-Patents.txt.gz -o patents.txt.gz
    gzip -d patents.txt.gz && mkdir -p ${DATASET_OUTDIR}/patents && mv patents.txt ${DATASET_OUTDIR}/patents/snap.txt
 fi
 
