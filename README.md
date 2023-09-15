@@ -1,5 +1,5 @@
-# GraphMini-Artifacts
-Artifacts for GraphMini
+# GraphMini
+Artifacts for "GraphMini: Accelerating Graph Pattern Matching Using Auxiliary Graphs"
 
 # Hardware Requirements
 1. 128GB of free RAM to preprocess the graph Friendster correctly.
