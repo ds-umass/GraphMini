@@ -32,16 +32,16 @@ sudo apt install bc cmake mpich clang-format -y
 6. Friendster
 
 
-All graphs are treated as unlabelled and undirected graph.
+All graphs are treated as unlabelled and undirected graphs.
 We also provide scripts to download and preprocess these data automatically. See details below.
 
 # Project Structure (including two baseline systems: GraphPi and Dryadic)
 ```markdown
 - Datasets
     Subfolders:
-    - Dryadic (preprocessd graph data for Dryadic)
-    - GraphPi (preprocessd graph data for GraphPi)
-    - GraphMini (preprocessd graph data for GraphMini)
+    - Dryadic (preprocessed graph data for Dryadic)
+    - GraphPi (preprocessed graph data for GraphPi)
+    - GraphMini (preprocessed graph data for GraphMini)
     - TXT (downloaded graph data from SNAP)
     Scripts: the following scripts are used to download and preprocess datasets used in the experiments
     - download.sh (downloads data from SNAP)
@@ -49,15 +49,15 @@ We also provide scripts to download and preprocess these data automatically. See
     - graphpi.sh scripts for preprocessing datasets into format can be handled by GraphPi
     - graphmini_prep.sh scripts for preprocessing datasets into format can be handled by GraphMini
     - prep.sh run all the scripts above
-- Dryadic (source code / binaries of Dryadic)
-- GraphPi (source code / binaries of GraphPi)
-- GraphMini (source code / binaries of GraphMini)
+- Dryadic (source code/binaries of Dryadic)
+- GraphPi (source code/binaries of GraphPi)
+- GraphMini (source code/binaries of GraphMini)
 - Experiments 
     Subfolders:
     - Dryadic (experiment results for Dryadic)
     - GraphMini (experiment results for GraphMini)
     - GraphPi (experiment results for GraphPi)
-    Scripts: the following scripts are used to automate running the benchmark experiments appeared in the paper
+    Scripts: the following scripts are used to automate running the benchmark experiments that appeared in the paper
     - queries.sh (defines what queries and graphs to run in the experiment)
     - run_dryadic_edge.sh (test dryadic on edge-induced pattern defined in queries.sh)
     - run_dryadic_vertex.sh (test dryadic on vertex-induced pattern defined in queries.sh)
@@ -78,7 +78,7 @@ We also provide scripts to download and preprocess these data automatically. See
 bash ./build.sh
 ```
 
-2. Download dataset from snap and preprocess the datasets for Dryadic, GraphPi and GraphMini:
+2. Download the dataset from SNAP and preprocess the datasets for Dryadic, GraphPi, and GraphMini:
 
 ```bash
 bash ./Datasets/prep.sh
@@ -92,11 +92,11 @@ bash ./Datasets/prep.sh
 
 
 The "Queries" variable defines the queries to test. It takes inputs in (undirected) adjacency matrix format
-The "QuerySizes" variable defines the number of vertex in the each of the query pattern. 
+The "QuerySizes" variable defines the number of vertex in each of the query patterns. 
 The "GraphNames" defines the data graphs to run the experiments. Examples are given in the script.
 The "TIMEOUT" defines the maximum amount of time before terminating a query.
 
-Notice that the some query can run for a very long time (>24h). You can modify the "TIMEOUT" variable to change the upperbound of query execution time. GraphMini can finish most queries in less than 12h on a 32 cores system. 
+Notice that some queries can run for a very long time (>24h). You can modify the "TIMEOUT" variable to change the upper bound of query execution time. GraphMini can finish most queries in less than 12 hours on a 32-core system. 
 
 4. Reproduce the benchmark experiments:
 
@@ -105,7 +105,7 @@ nohup bash ./Experiments/run.sh &
 ```
 
 This script will run all the tested systems (GraphPi, Dryadic, GraphMini, Base) by invoking all the tested scripts in the directory (e.g. run_graphmini_vertex.sh). 
-Each script can take more than 3 days to run. So if you want to get results quickly, you can use mutiple machines and run them seperately by invoking each script one by one.
+Each script can take more than 3 days to run. So if you want to get results quickly, you can use multiple machines and run them separately by invoking each script one by one.
 
 The script will generate a log file for each tested query. The path to the log file is named as:
 ```
@@ -114,7 +114,7 @@ The script will generate a log file for each tested query. The path to the log f
 
 5. Generating Tables
 
-To generate csv tables corresponding to "Fig 5: GraphMini vs State-of-The-Art"
+To generate CSV tables corresponding to "Fig 5: GraphMini vs State-of-The-Art"
 
 Fig 5a:
 
