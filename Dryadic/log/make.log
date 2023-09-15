@@ -1,0 +1,4 @@
+make[1]: Entering directory '/mnt/homes/juelinliu/GraphMini/Dryadic'
+touch -a plans/plan_query_l_best.hpp.h
+sed "/INCLUDE_HERE/c\#include \"plans/plan_query_l_best.hpp\"" 'template_test.cpp'| sed "/INCLUDE_HEADER_HERE/c\#include \"plans/plan_query_l_best.hpp.h\"" | tee plans/plan_query_l_best.hpp.ceep | g++ -std=c++17 -fopenmp -x c++ - -Wall -Werror=return-type -Wshadow -Wno-unused-variable -Wno-reorder -O3 -fpermissive -o bin/query_l_best
+make[1]: Leaving directory '/mnt/homes/juelinliu/GraphMini/Dryadic'

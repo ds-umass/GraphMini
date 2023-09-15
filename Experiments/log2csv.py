@@ -1,9 +1,9 @@
-import os, csv, dataclasses
+import os, csv, dataclasses, argparse
 
-tested_systems = ["GraphPi", "Dryadic", "MiniGraph"]
+tested_systems = ["GraphPi", "Dryadic", "GraphMini", "Base"]
 tested_graphs = ["wiki", "patents", "youtube", "lj", "orkut", "friendster"]
+# tested_graphs = ["wiki"]
 tested_queries = ["P1", "P2", "P3", "P4", "P5", "P6", "P7", "P8"]
-# tested_queries = ["P1"]
 tested_query_types = ["VertexInduced", "EdgeInduced", "EdgeInducedIEP"]
 
 @dataclasses.dataclass
@@ -56,58 +56,75 @@ def read_log(system, graph, query, qtype):
         log.is_available = False
     
     return log
-        
-def log2csv(logs: list[Runlog]):
-    def find_log(system, graph, query, qtype):
-        for log in logs:
-            if log.system == system and log.graph == graph and log.query == query and log.qtype == qtype:
-                return log
-        return Runlog() # not available
+
+def find_log(logs, system, graph, query, qtype) -> Runlog:
+    for log in logs:
+        if log.system == system and log.graph == graph and log.query == query and log.qtype == qtype:
+            return log
+    return Runlog() # not available
+                    
+def log2csv(baseline: str, target: str, qtype: str):
     
+    def read_logs(system: str):
+        logs = []
+        for graph in tested_graphs:
+            for query in tested_queries:
+                log = read_log(system, graph, query, qtype)
+                logs.append(log)
+        return logs
     dir_path = os.path.dirname(__file__)
-    file_path = os.path.join(dir_path, "log.csv")
+    file_path = os.path.join(dir_path, f"{baseline}_vs_{target}_{qtype}.csv")
     headers = ["Graph", "Query", "QueryType", \
-        "GraphPi-Compilation(s)", "GraphPi-Execution(s)", "GraphPi-Runs", \
-        "Dryadic-Compilation(s)", "Dryadic-Execution(s)", "Dryadic-Runs", \
-        "MiniGraph-Compilation(s)", "MiniGraph-Code-Execution(s)", "MiniGraph-Runs"]
+        f"{baseline}-Compilation(s)", f"{baseline}-Execution(s)", f"{baseline}-Results", \
+        f"{target}-Compilation(s)", f"{target}-Execution(s)", f"{target}-Results", \
+        "Speed Up"]
     
-    with open(file_path, 'w') as file:
+    baseline_logs = read_logs(baseline)
+    target_logs = read_logs(target)
+    lines = []
+    for graph in tested_graphs:
+        for query in tested_queries:
+            base_log = find_log(baseline_logs, baseline, graph, query, qtype)
+            target_log = find_log(target_logs, target, graph, query, qtype)
+            cur_line = [graph, query, qtype]
+            for log in [base_log, target_log]:
+                if log.is_available and not log.is_oot:
+                    cur_line.append(str(log.code_generation_time))
+                    cur_line.append(str(log.code_execution_time))
+                    cur_line.append(str(log.result))
+                    
+                elif log.is_available and log.is_oot:
+                    cur_line.append("out of time")
+                    cur_line.append("out of time")
+                    cur_line.append("out of time")
+                else:
+                    cur_line.append("not available")
+                    cur_line.append("not available")
+                    cur_line.append("not available")
+            if base_log.is_available and target_log.is_available:
+                cur_line.append(round(base_log.code_execution_time / target_log.code_execution_time, 3))
+            elif not base_log.is_available and target_log.is_available:
+                cur_line.append("INF")
+            elif base_log.is_available and not target_log.is_available:
+                cur_line.append("0")
+                print('targe_log is not available')
+            else:
+                cur_line.append("out of time")
+            lines.append(cur_line)
+        
+    with open(file_path, "w") as file:
         writer = csv.writer(file)
         writer.writerow(headers)
+        writer.writerows(lines)
+    
+    print(f"Result is writtern to {file_path}")
+    
         
-        for graph in tested_graphs:
-            for query in tested_queries:
-                for qtype in tested_query_types:
-                    cur_line = [graph, query, qtype]
-                    
-                    for system in tested_systems:
-                        log = find_log(system, graph, query, qtype)
-                        if log.is_available and not log.is_oot:
-                            cur_line.append(str(log.code_generation_time))
-                            cur_line.append(str(log.code_execution_time))
-                            cur_line.append(str(log.result))
-                            
-                        elif log.is_available and log.is_oot:
-                            cur_line.append("out of time")
-                            cur_line.append("out of time")
-                            cur_line.append("out of time")
-                        else:
-                            cur_line.append("not available")
-                            cur_line.append("not available")
-                            cur_line.append("not available")
-                    
-                    writer.writerow(cur_line)
-                    
-                    
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description='convert log file to speed up')
+    parser.add_argument('--baseline', type=str, help='baseline system', choices=['GraphPi', 'GraphMini', "Dryadic", "Base"])
+    parser.add_argument('--target', type=str, help='target system', choices=['GraphPi', 'GraphMini', "Dryadic", "Base"])
+    parser.add_argument('--adjtype', default=str, type=str, help='Query Type', choices=["VertexInduced", "EdgeInduced", "EdgeInducedIEP"])
+    args = parser.parse_args()
     
-    logs = []
-    for system in tested_systems:
-        for graph in tested_graphs:
-            for query in tested_queries:
-                for qtype in tested_query_types:
-                    log = read_log(system, graph, query, qtype)
-                    logs.append(log)
-    
-    log2csv(logs)
-    
+    log2csv(args.baseline, args.target, args.adjtype)    

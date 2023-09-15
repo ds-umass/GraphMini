@@ -10,11 +10,8 @@ CXX:=g++ -std=c++17 -fopenmp
 sources:=$(wildcard plans/*.hpp)
 objects:=$(patsubst plans/plan_%.hpp, bin/%, $(sources))
 
-all: 
-	@$(MAKE) _all -j4
-_all: 
-	$(objects)
-
+all:; @${MAKE} _all -j4
+_all: $(objects)
 .PHONY: all _all
 
 bin/%: plans/plan_%.hpp template_test.cpp support.h Makefile

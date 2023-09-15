@@ -7,7 +7,7 @@ source ${SCRIPT_DIR}/queries.sh
 
 USE_IEP_FLAG=1 # enable optimization for counting only
 QUERY_TYPE="EdgeInducedIEP"
-TIMEOUT=24h
+
 for graph_name in "${GraphNames[@]}"
     do 
         INDEX=1

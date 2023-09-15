@@ -1,0 +1,29 @@
+In file included from /usr/include/c++/11/cassert:44,
+                 from support.h:13,
+                 from <stdin>:2:
+support.h: In member function ‘VertexSet Graph::L(labelType)’:
+support.h:520:18: warning: comparison of integer expressions of different signedness: ‘labelType’ {aka ‘unsigned int’} and ‘int’ [-Wsign-compare]
+  520 |     assert(label < n_labels);
+      |            ~~~~~~^~~~~~~~~~
+In file included from <stdin>:2:
+support.h: In function ‘VertexSet& difference_set(VertexSet&, const VertexSet&, const VertexSet&)’:
+support.h:563:22: warning: passing ‘const VertexSet’ as ‘this’ argument discards qualifiers [-fpermissive]
+  563 |   return a.difference(dst, b);
+      |          ~~~~~~~~~~~~^~~~~~~~
+support.h:265:14: note:   in call to ‘VertexSet& VertexSet::difference(VertexSet&, const VertexSet&)’
+  265 |   VertexSet& difference(VertexSet& dst, const VertexSet &other) {
+      |              ^~~~~~~~~~
+support.h: In function ‘VertexSet difference_set(const VertexSet&, const VertexSet&, vidType)’:
+support.h:567:22: warning: passing ‘const VertexSet’ as ‘this’ argument discards qualifiers [-fpermissive]
+  567 |   return a.difference(b,up);
+      |          ~~~~~~~~~~~~^~~~~~
+support.h:360:13: note:   in call to ‘VertexSet VertexSet::difference(const VertexSet&, vidType)’
+  360 |   VertexSet difference(const VertexSet &other, vidType upper) {
+      |             ^~~~~~~~~~
+support.h: In function ‘VertexSet& difference_set(VertexSet&, const VertexSet&, const VertexSet&, vidType)’:
+support.h:571:22: warning: passing ‘const VertexSet’ as ‘this’ argument discards qualifiers [-fpermissive]
+  571 |   return a.difference(dst, b,up);
+      |          ~~~~~~~~~~~~^~~~~~~~~~~
+support.h:366:14: note:   in call to ‘VertexSet& VertexSet::difference(VertexSet&, const VertexSet&, vidType)’
+  366 |   VertexSet& difference(VertexSet& dst, const VertexSet &other, vidType upper) {
+      |              ^~~~~~~~~~

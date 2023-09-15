@@ -10,7 +10,7 @@ RUNNT_PATH=${DRYADIC_HOME}/run.sh
 
 QUERY_TYPE_FLAG=1
 QUERY_TYPE="VertexInduced"
-TIMEOUT=24h
+
 for graph_name in "${GraphNames[@]}"
     do 
         INDEX=1

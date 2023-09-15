@@ -1,0 +1,38 @@
+Using pattern list: query_l
+20 plans for graph 0 = 
+plan 0 for graphlet 0 has expected complexity 1.01731e+07
+plan 1 for graphlet 0 has expected complexity 1.01731e+07
+plan 2 for graphlet 0 has expected complexity 1.01731e+07
+plan 3 for graphlet 0 has expected complexity 1.01895e+07
+plan 4 for graphlet 0 has expected complexity 1.01895e+07
+plan 5 for graphlet 0 has expected complexity 1.01895e+07
+plan 6 for graphlet 0 has expected complexity 2.85234e+07
+plan 7 for graphlet 0 has expected complexity 2.85234e+07
+plan 8 for graphlet 0 has expected complexity 2.85234e+07
+plan 9 for graphlet 0 has expected complexity 2.85341e+07
+plan 10 for graphlet 0 has expected complexity 4.21265e+07
+plan 11 for graphlet 0 has expected complexity 4.21265e+07
+plan 12 for graphlet 0 has expected complexity 4.21265e+07
+plan 13 for graphlet 0 has expected complexity 4.21888e+07
+plan 14 for graphlet 0 has expected complexity 3.60309e+07
+plan 15 for graphlet 0 has expected complexity 2.8626e+07
+plan 16 for graphlet 0 has expected complexity 2.8626e+07
+plan 17 for graphlet 0 has expected complexity 2.8626e+07
+plan 18 for graphlet 0 has expected complexity 2.86888e+07
+plan 19 for graphlet 0 has expected complexity 3.50309e+07
+Chose plan 0 as best for graphlet 0
+putting into 0
+RestSet: ins: () out: () restriction: (0,) putting into 1
+RestSet: ins: () out: () restriction: (-1,) RestSet: ins: () out: () restriction: (0,) putting into 2
+RestSet: ins: () out: () restriction: (-1,-1,) RestSet: ins: () out: () restriction: (-1,-1,) RestSet: ins: () out: () restriction: (0,1,) putting into 3
+RestSet: ins: () out: () restriction: (-1,-1,-1,) RestSet: ins: () out: () restriction: (-1,-1,-1,) RestSet: ins: () out: () restriction: (0,1,2,) putting into 4
+RestSet: ins: () out: () restriction: (-1,-1,-1,-1,) RestSet: ins: () out: () restriction: (-1,-1,-1,-1,) RestSet: ins: () out: () restriction: (0,1,2,3,) putting into 5
+RestSet: ins: () out: () restriction: (-1,-1,-1,-1,-1,) RestSet: ins: () out: () restriction: (-1,-1,-1,-1,-1,) Generated all 20 plans in 0.002124
+Writing best plan to ../plans/plan_query_l_best.hpp
+0 streaming 0 0 0
+0 streaming 1 1 0
+0 streaming 2 2 0
+0 streaming 3 3 0
+0 streaming 4 4 0
+0 streaming 5 5 0
+0 streaming 6 6 0

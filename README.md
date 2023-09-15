@@ -1,5 +1,5 @@
 # GraphMini-Artifacts
-Artifacts for GraphMini (MiniGraph was its initial name)
+Artifacts for GraphMini
 
 # Hardware Requirements
 1. 128GB of free RAM to preprocess the graph Friendster correctly.
@@ -14,10 +14,13 @@ Artifacts for GraphMini (MiniGraph was its initial name)
 2. Make
 3. MPI
 4. GCC compiler (>= 7)
+5. Python (>= 3.8)
+6. bc
+7. clang-format (optional)
 
 ### Install libraries
 ```bash
-sudo apt install cmake mpich -y
+sudo apt install bc cmake mpich clang-format -y
 ```
 
 # Tested Graph Data
@@ -38,21 +41,21 @@ We also provide scripts to download and preprocess these data automatically. See
     Subfolders:
     - Dryadic (preprocessd graph data for Dryadic)
     - GraphPi (preprocessd graph data for GraphPi)
-    - MiniGraph (preprocessd graph data for MiniGraph)
+    - GraphMini (preprocessd graph data for GraphMini)
     - TXT (downloaded graph data from SNAP)
     Scripts: the following scripts are used to download and preprocess datasets used in the experiments
     - download.sh (downloads data from SNAP)
     - dryadic_prep.sh scripts for preprocessing datasets into format can be handled by Dryadic
     - graphpi.sh scripts for preprocessing datasets into format can be handled by GraphPi
-    - minigraph_prep.sh scripts for preprocessing datasets into format can be handled by MiniGraph
+    - graphmini_prep.sh scripts for preprocessing datasets into format can be handled by GraphMini
     - prep.sh run all the scripts above
 - Dryadic (source code / binaries of Dryadic)
 - GraphPi (source code / binaries of GraphPi)
-- MiniGraph (source code / binaries of MiniGraph)
+- GraphMini (source code / binaries of GraphMini)
 - Experiments 
     Subfolders:
     - Dryadic (experiment results for Dryadic)
-    - MiniGraph (experiment results for MiniGraph)
+    - GraphMini (experiment results for GraphMini)
     - GraphPi (experiment results for GraphPi)
     Scripts: the following scripts are used to automate running the benchmark experiments appeared in the paper
     - queries.sh (defines what queries and graphs to run in the experiment)
@@ -60,9 +63,12 @@ We also provide scripts to download and preprocess these data automatically. See
     - run_dryadic_vertex.sh (test dryadic on vertex-induced pattern defined in queries.sh)
     - run_graphpi_edge_iep.sh (test graphpi on edge-induced pattern defined in queries.sh, with inclusion-exclusion optimization)
     - run_graphpi_edge.sh (test graphpi on edge-induced pattern defined in queries.sh, without inclusion-exclusion optimization)
-    - run_minigraph_vertex.sh (test minigraph on vertex-induced pattern defined in queries.sh, without inclusion-exclusion optimization)
-    - run_minigraph_edge.sh (test minigraph on edge-induced pattern defined in queries.sh, without inclusion-exclusion optimization)
-    - run_minigraph_edge_iep.sh (test minigraph on edge-induced pattern defined in queries.sh, with inclusion-exclusion optimization)
+    - run_graphmini_vertex.sh (test GraphMini on vertex-induced pattern defined in queries.sh, without inclusion-exclusion optimization)
+    - run_graphmini_edge.sh (test GraphMini on edge-induced pattern defined in queries.sh, without inclusion-exclusion optimization)
+    - run_graphmini_edge_iep.sh (test GraphMini on edge-induced pattern defined in queries.sh, with inclusion-exclusion optimization)
+    - run_base_vertex.sh (test Base on vertex-induced pattern defined in queries.sh, without inclusion-exclusion optimization)
+    - run_base_edge.sh (test Base on edge-induced pattern defined in queries.sh, without inclusion-exclusion optimization)
+    - run_base_edge_iep.sh (test Base on edge-induced pattern defined in queries.sh, with inclusion-exclusion optimization)
 ```
 
 # How to reproduce the experiment results
@@ -84,67 +90,68 @@ bash ./Datasets/prep.sh
 ./Experiments/queries.sh
 ```
 
+
 The "Queries" variable defines the queries to test. It takes inputs in (undirected) adjacency matrix format
 The "QuerySizes" variable defines the number of vertex in the each of the query pattern. 
 The "GraphNames" defines the data graphs to run the experiments. Examples are given in the script.
+The "TIMEOUT" defines the maximum amount of time before terminating a query.
 
-4. Reproduce the benchmark experiments (ex. vertex-induced) of GraphMini:
+Notice that the some query can run for a very long time (>24h). You can modify the "TIMEOUT" variable to change the upperbound of query execution time. GraphMini can finish most queries in less than 12h on a 32 cores system. 
 
-```bash
-nohup bash ./Experiments/run_minigraph_vertex.sh &
-```
-Similarly, you can use other scripts in the `Experiment` folder to reproduce the results for different baseline systems and settings.
-
-# Convert log files into csv output.
-
-Each query will produce a run.log file to record the query compilation time and query execution time.
-You can easily convert the results using the script `./Experiments/log2csv.py` to convert them into a csv file called `log.csv`.
-
-# How to run a single query with GraphMini
-1. You must first preprocess the dataset and build the binaries of GraphMini as described above.
-
-The binary takes 5 inputs to execute:
-```bash
-./MiniGraph/build/bin/run [graph_nickname] [path_to_graph] [query_nickname] [query_adjmat] [query_type]
-```
-- graph_nickname: nickname for tested graph (ex. wiki)
-- path_to_graph: path to the directory that contains the preprocessed graph. (ex ./Datasets/MiniGraph/wiki)
-- query_nickname: nickname for tested query (ex. P1)
-- query_adjmat: adjacency matrix of the tested query (ex. "0111101111011110" 4-clique)
-- query_type: 
-    - 0: vertex-induced, 
-    - 1: edge-induced, 
-    - 2: edge-induced with IEP optimization
-
-An example query:
+4. Reproduce the benchmark experiments:
 
 ```bash
-./MiniGraph/build/bin/run wiki ./Datasets/MiniGraph/wiki P1 0111101111011110 0
+nohup bash ./Experiments/run.sh &
 ```
 
-# How to run GraphMini with different configuration
-The default setting uses a cost model to determine which vertices to prune and uses nested parallelism to speed up execution.
-In `MiniGraph/src/run.cpp`, you can modify the following two lines to change the configuration. You also need to rebuild the binaries to ensure the changes are made.
+This script will run all the tested systems (GraphPi, Dryadic, GraphMini, Base) by invoking all the tested scripts in the directory (e.g. run_graphmini_vertex.sh). 
+Each script can take more than 3 days to run. So if you want to get results quickly, you can use mutiple machines and run them seperately by invoking each script one by one.
 
-```cpp
-line 210: conf.pruningType = PruningType::CostModel;
-line 211: conf.parType     = ParallelType::NestedRt;
+The script will generate a log file for each tested query. The path to the log file is named as:
 ```
-Acceptable configuration for `conf.pruningType` includes:
-```cpp
-enum class PruningType {
-    None = 0, // not using minigraph
-    Static = 1, // use if and only if not introducing any redundant set operation
-    Eager = 2, // use for all potential cases
-    Online = 3, // use iff pruned adj will be used once
-    CostModel = 4, // lazy + cost model
-};
+./Experiments/{System}_{Graph}_{Query}_{QueryType}/run.log
+```
 
-enum class ParallelType {
-    OpenMP,
-    TbbTop, // only parallel at top level like OpenMP
-    Nested, // aggressively nested
-    NestedRt, // decide whether to parallel based on cost model
-};
+5. Generating Tables
+
+To generate csv tables corresponding to "Fig 5: GraphMini vs State-of-The-Art"
+
+Fig 5a:
+
+```bash
+cd Experiments && python3 log2csv.py --baseline=Dryadic --target=GraphMini --adjtype=VertexInduced
 ```
-    
+
+Fig 5b:
+
+```bash
+cd Experiments && python3 log2csv.py --baseline=Dryadic --target=GraphMini --adjtype=EdgeInduced
+```
+
+Fig 5c:
+
+```bash
+cd Experiments && python3 log2csv.py --baseline=GraphPi --target=GraphMini --adjtype=EdgeInduced
+```
+
+Fig 5d:
+
+```bash
+cd Experiments && python3 log2csv.py --baseline=GraphPi --target=GraphMini --adjtype=EdgeInducedIEP
+```
+
+To generate tables corresponding to "Fig 6: GraphMini vs Base"
+Fig 6a:
+
+```bash
+cd Experiments && python3 log2csv.py --baseline=Base --target=GraphMini --adjtype=EdgeInduced
+```
+
+Fig 6b:
+
+```bash
+cd Experiments && python3 log2csv.py --baseline=Base --target=GraphMini --adjtype=VertexInduced
+```
+
+# To learn more about GraphMini
+See more detail in GraphMini/README.md

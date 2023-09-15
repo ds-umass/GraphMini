@@ -7,7 +7,6 @@ source ${SCRIPT_DIR}/queries.sh
 
 USE_IEP_FLAG=0
 QUERY_TYPE="EdgeInduced"
-TIMEOUT=24h
 for graph_name in "${GraphNames[@]}"
     do 
         INDEX=1
