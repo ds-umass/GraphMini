@@ -1,6 +1,8 @@
 # GraphMini
 Artifacts for "GraphMini: Accelerating Graph Pattern Matching Using Auxiliary Graphs"
 
+Github link: [https://github.com/ds-umass/GraphMini/](https://github.com/ds-umass/GraphMini/)
+
 # Hardware Requirements
 1. 128GB of free RAM to preprocess the graph Friendster correctly.
 2. 180GB of free disk space to store preprocessed graphs.
