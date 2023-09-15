@@ -7,7 +7,7 @@ export P6="011110101101110011110000101000011000";
 export P7="011110101011110010100001111000010100";
 export P8="0111111101111111011111110111111101111111001111100";
 export GraphNames=("wiki" "youtube" "patents" "lj" "orkut" "friendster")
-# export GraphNames=("wiki")
+export GraphNames=("wiki")
 
 export Queries=($P1 $P2 $P3 $P4 $P5 $P6 $P7 $P8)
 export QuerySizes=(4 5 5 5 6 6 6 7)
