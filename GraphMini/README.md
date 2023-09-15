@@ -1,8 +1,8 @@
 # GraphMini
-GraphMini is a high performance graph pattern matching system. It supports subgraph enumeration on arbitrary patterns. It supports both vertex-induced and edge-induced variants.
+GraphMini is a high-performance graph pattern-matching system. It supports subgraph enumeration on arbitrary patterns. It supports both vertex-induced and edge-induced variants. (See latest version at [https://github.com/Juelin-Liu/GraphMini](https://github.com/Juelin-Liu/GraphMini))
 
 # How to run a single query with GraphMini
-The binary takes 7 required and 1 optional inputs to execute:
+The binary takes 7 required and 1 optional input:
 ```bash
 ./build/bin/run [graph_name] [path_to_graph] [query_nickname] [query_adjmat] [query_type] [pruning_type] [parallel_type] [exp_id=-1 (optional)]
 ```
@@ -32,4 +32,4 @@ For example:
 ./build/bin/run wiki ../Datasets/GraphMini/wiki P1 0111101111011110 0 4 3
 ```
 
-This query runs 4clique query (P1) on graph wiki. The query is vertex-induced. The executable use CostModel to decide which adjacency lists to prune and use nested parallelism to speed up query execution. 
+This query runs 4clique query (P1) on graph wiki. The query is vertex-induced. The executable uses CostModel to decide which adjacency lists to prune and uses nested parallelism to speed up query execution. 
