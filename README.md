@@ -92,13 +92,13 @@ bash ./Datasets/prep.sh
 ./Experiments/queries.sh
 ```
 
+The `Queries` variable defines the queries to test. It takes inputs in (undirected) adjacency matrix format.
 
-The "Queries" variable defines the queries to test. It takes inputs in (undirected) adjacency matrix format
-The "QuerySizes" variable defines the number of vertex in each of the query patterns. 
-The "GraphNames" defines the data graphs to run the experiments. Examples are given in the script.
-The "TIMEOUT" defines the maximum amount of time before terminating a query.
+The `QuerySizes` variable defines the number of vertex in each of the query patterns. 
 
-Notice that some queries can run for a very long time (>24h). You can modify the "TIMEOUT" variable to change the upper bound of query execution time. GraphMini can finish most queries in less than 12 hours on a 32-core system. 
+The `GraphNames` defines the data graphs to run the experiments. Examples are given in the script. Notice that the default setting will run experiments on all the graphs, which can take a significant amount of time, you can modify the `GraphNames` to run experiments on graphs of interest only.
+
+The `TIMEOUT` defines the maximum amount of time before terminating a query. Notice that some queries can run for a very long time (>24h). You can modify the "TIMEOUT" variable to change the upper bound of query execution time. GraphMini can finish most queries in less than 12 hours on a 32-core system. 
 
 4. Reproduce the benchmark experiments:
 
